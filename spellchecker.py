@@ -27,12 +27,11 @@ class SpellChecker(object):
         if local_dictionary:
             self._word_frequency.load_dictionary(local_dictionary)
         if language:
-            filename = '{}.json.gz'.format(language)
+            filename = f'{language}.json.gz'
             here = os.path.dirname(__file__)
             full_filename = os.path.join(here, 'resources', filename)
             if not os.path.exists(full_filename):
-                msg = ('The provided dictionary language ({}) does not '
-                       'exist!').format(language)
+                msg = f'The provided dictionary language ({language}) does not exist!'
                 raise ValueError(msg)
             self._word_frequency.load_dictionary(full_filename)
 
@@ -107,8 +106,12 @@ class SpellChecker(object):
             Returns:
                 set: The set of those words from the input that are in the \
                 corpus '''
-        return set(w for w in words if w in self._word_frequency.dictionary or
-                   not self._check_if_should_check(w))
+        return {
+            w
+            for w in words
+            if w in self._word_frequency.dictionary
+            or not self._check_if_should_check(w)
+        }
 
     def unknown(self, words):
         ''' The subset of `words` that do not appear in the dictionary
@@ -120,7 +123,7 @@ class SpellChecker(object):
                 set: The set of those words from the input that are not in \
                 the corpus '''
         tmp = [w for w in words if self._check_if_should_check(w)]
-        return set(w for w in tmp if w not in self._word_frequency.dictionary)
+        return {w for w in tmp if w not in self._word_frequency.dictionary}
 
     def edit_distance_1(self, word):
         ''' Compute all strings that are one edit away from `word` using only

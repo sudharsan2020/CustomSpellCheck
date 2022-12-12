@@ -40,7 +40,7 @@ class parseTextFile:
 
                     # Process the words into dictionary
                     wordList, correctedList = line.split("||@@||")
-                    
+
                     #Tokenize the list elements
                     wordList = wordList.split(" ")
                     #wordList = [re.sub('[^a-zA-Z0-9]+', '', _) for _ in wordList.split(" ")]
@@ -49,10 +49,10 @@ class parseTextFile:
                     self.sourceListLen = len(wordList)
                     self.targetListLen = len(correctedList)
                     if self.sourceListLen == self.targetListLen:
-                        
+
                         #Frame the language dictionary
                         for key,value in zip(wordList, correctedList):
-                            
+
                             #This is to assert that string with only special characters are not used
                             #It should be a combination of strings with special characters
                             #EX.Ignore "," accept "Hello,"
@@ -60,10 +60,10 @@ class parseTextFile:
                             if (key != value) and len(tmp_value.strip()) > 0:
                                 addToDict(self.my_lang_dict, key.strip(), value.strip())
                                 addToList(self.correctWordsList, key.strip())
-                                
+
                     elif self.sourceListLen + 1 == self.targetListLen:
                         
-                        print("{}->{}".format(wordList,correctedList))
+                        print(f"{wordList}->{correctedList}")
                         #Frame the malormed-language dictionary
                         for key,value in zip(wordList[:self.targetListLen], correctedList):
                             tmp_value = re.sub(r'[^\w\s]','',value)
@@ -76,6 +76,6 @@ class parseTextFile:
                             if (key != value) and len(tmp_value.strip()) > 0:
                                 addToDict(self.malformed_dict, key, value)
                         self.misMatchCount += 1
-            
+
         #print ("Total number of mismatched lines:", self.misMatchCount)      
         return self.my_lang_dict, self.malformed_dict, self.correctWordsList
