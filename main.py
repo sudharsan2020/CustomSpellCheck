@@ -19,12 +19,11 @@ def display_time(seconds, granularity=2):
     result = []
 
     for name, count in intervals:
-        value = seconds // count
-        if value:
+        if value := seconds // count:
             seconds -= value * count
             if value == 1:
                 name = name.rstrip('s')
-            result.append("{} {}".format(value, name))
+            result.append(f"{value} {name}")
     return ', '.join(result[:granularity])
 
 
@@ -98,7 +97,7 @@ if __name__ == "__main__":
 
     #Print the result
     runTime = int(time.time() - startTime)
-    print("Prediction completed in :{} ".format(display_time(runTime)))
+    print(f"Prediction completed in :{display_time(runTime)} ")
 
 
 
